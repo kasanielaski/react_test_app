@@ -1,34 +1,49 @@
 import React, { Component } from 'react';
+// import ListItem from './ListItem';
 
 class ToDoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      date: new Date()
+      listData: []
     };
   }
 
-  componentDidMount() {
-    this.timerID = setInterval(() => {
-      this.tick();
-    }, 1000);
-  }
+  // componentWillMount() {
+  //     if (Object.keys(this.state.listData).length === 0) {
+  //         const storedData = JSON.parse(localStorage.getItem("listData"));
+  //         this.setState({
+  //             listData: storedData
+  //         });
+  //     }
+  // }
 
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
-
-  tick() {
-    this.setState({
-      date: new Date()
-    });
-  }
+  onKeyUp = event => {
+    switch (event.keyCode) {
+      case 13:
+        this.setState({
+          listData: [
+            ...this.state.listData,
+            {
+              name: event.target.value.toString(),
+              done: false
+            }
+          ]
+        });
+        event.target.value = '';
+        break;
+      case 27:
+        event.target.value = '';
+        break;
+      default:
+        break;
+    }
+  };
 
   render() {
     return (
       <div>
-        <p>Sup</p>
-        <h1>It's {this.state.date.toLocaleTimeString()}</h1>
+        <input onKeyUp={e => this.onKeyUp(e)} />
       </div>
     );
   }
