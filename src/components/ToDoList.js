@@ -10,17 +10,24 @@ class ToDoList extends Component {
         };
     }
 
-    // componentWillMount() {
-    //     if (Object.keys(this.state.listData).length === 0) {
-    //         const storedData = JSON.parse(localStorage.getItem("listData"));
-    //         this.setState({
-    //             listData: storedData
-    //         });
-    //     }
-    // }
+    componentWillMount() {
+        if (
+            this.state.listData.length === 0 &&
+            localStorage.getItem('listData') !== null
+        ) {
+            const recoveredData = JSON.parse(localStorage.getItem('listData'));
+            this.setState({
+                listData: recoveredData
+            });
+        }
+    }
 
-    addItem() {
-        this.setState({
+    async addItem() {
+        if (this.state.inputValue.trim() === '') {
+            return;
+        }
+
+        await this.setState({
             listData: [
                 ...this.state.listData,
                 {
@@ -30,6 +37,12 @@ class ToDoList extends Component {
             ],
             inputValue: ''
         });
+        this.storeData();
+    }
+
+    storeData() {
+        const formattedData = JSON.stringify(this.state.listData);
+        localStorage.setItem('listData', formattedData);
     }
 
     onKeyUp(event) {
