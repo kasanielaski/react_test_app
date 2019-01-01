@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ListItem from './ListItem';
+import { LOCAL_STORAGE_KEY } from '../config';
 
 class ToDoList extends Component {
     constructor(props) {
@@ -11,38 +12,48 @@ class ToDoList extends Component {
     }
 
     componentWillMount() {
-        if (
-            this.state.listData.length === 0 &&
-            localStorage.getItem('listData') !== null
-        ) {
-            const recoveredData = JSON.parse(localStorage.getItem('listData'));
-            this.setState({
-                listData: recoveredData
-            });
+        try {
+            if (
+                this.state.listData.length === 0 &&
+                localStorage.getItem(LOCAL_STORAGE_KEY) !== null
+            ) {
+                const listData = JSON.parse(
+                    localStorage.getItem(LOCAL_STORAGE_KEY)
+                );
+                this.setState({
+                    listData
+                });
+            }
+        } catch (error) {
+            throw new Error(`there is problem with localStorage: ${error}`);
         }
     }
 
-    async addItem() {
+    addItem() {
         if (this.state.inputValue.trim() === '') {
             return;
         }
 
-        await this.setState({
-            listData: [
-                ...this.state.listData,
-                {
-                    name: this.state.inputValue.toString(),
-                    done: false
-                }
-            ],
-            inputValue: ''
-        });
-        this.storeData();
+        this.setState(
+            {
+                listData: [
+                    ...this.state.listData,
+                    {
+                        name: this.state.inputValue.toString(),
+                        isDone: false
+                    }
+                ],
+                inputValue: ''
+            },
+            () => {
+                this.storeData();
+            }
+        );
     }
 
     storeData() {
         const formattedData = JSON.stringify(this.state.listData);
-        localStorage.setItem('listData', formattedData);
+        localStorage.setItem(LOCAL_STORAGE_KEY, formattedData);
     }
 
     onKeyUp(event) {
@@ -60,19 +71,25 @@ class ToDoList extends Component {
         }
     }
 
-    onClick() {
-        this.addItem();
-    }
-
     onChange(event) {
         this.setState({
             inputValue: event.target.value
         });
     }
 
+    onStatusChange({ name, isDone }) {
+        const item = this.state.listData.find(item => item.name === name);
+        item.isDone = isDone;
+        this.storeData();
+    }
+
     render() {
-        const listitems = this.state.listData.map(item => (
-            <ListItem key={item.name} data={item} />
+        const listitems = this.state.listData.map((item, index) => (
+            <ListItem
+                key={`${item.name}_${index}`}
+                data={item}
+                onStatusChange={e => this.onStatusChange(e)}
+            />
         ));
 
         return (
@@ -83,7 +100,7 @@ class ToDoList extends Component {
                     onKeyUp={e => this.onKeyUp(e)}
                     onChange={e => this.onChange(e)}
                 />
-                <button onClick={e => this.onClick(e)}>add task</button>
+                <button onClick={() => this.addItem()}>add task</button>
                 <ul>{listitems}</ul>
             </div>
         );
