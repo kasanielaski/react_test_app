@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 class ListItem extends Component {
-    onChange(event) {
+    onChange() {
         this.props.onStatusChange({
             name: this.props.data.name,
             isDone: !this.props.data.isDone

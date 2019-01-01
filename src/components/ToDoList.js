@@ -45,9 +45,7 @@ class ToDoList extends Component {
                 ],
                 inputValue: ''
             },
-            () => {
-                this.storeData();
-            }
+            this.storeData()
         );
     }
 
@@ -78,9 +76,18 @@ class ToDoList extends Component {
     }
 
     onStatusChange({ name, isDone }) {
-        const item = this.state.listData.find(item => item.name === name);
-        item.isDone = isDone;
-        this.storeData();
+        this.setState(
+            {
+                listData: [
+                    ...this.state.listData.filter(item => item.name !== name),
+                    {
+                        name,
+                        isDone
+                    }
+                ]
+            },
+            this.storeData()
+        );
     }
 
     render() {
