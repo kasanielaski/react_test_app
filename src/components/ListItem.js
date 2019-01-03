@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 
 class ListItem extends Component {
-    onChange() {
-        this.props.onStatusChange({
+    changeStatus() {
+        this.props.onChangeStatus({
             name: this.props.data.name,
             isDone: !this.props.data.isDone
+        });
+    }
+
+    deleteTask() {
+        this.props.onDeleteTask({
+            name: this.props.data.name
         });
     }
 
@@ -16,9 +22,10 @@ class ListItem extends Component {
                 <input
                     type="checkbox"
                     checked={isDone}
-                    onChange={e => this.onChange(e)}
+                    onChange={() => this.changeStatus()}
                 />
                 <span>{name}</span>
+                <button onClick={() => this.deleteTask()}>delete task</button>
             </li>
         );
     }

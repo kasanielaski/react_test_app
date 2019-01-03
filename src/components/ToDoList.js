@@ -75,7 +75,7 @@ class ToDoList extends Component {
         });
     }
 
-    onStatusChange({ name, isDone }) {
+    onChangeStatus({ name, isDone }) {
         this.setState(
             {
                 listData: [
@@ -89,7 +89,20 @@ class ToDoList extends Component {
                     })
                 ]
             },
-            this.storeData()
+            () => this.storeData()
+        );
+    }
+
+    onDeleteTask({ name }) {
+        this.setState(
+            {
+                listData: [
+                    ...this.state.listData.filter(item => {
+                        return item.name !== name;
+                    })
+                ]
+            },
+            () => this.storeData()
         );
     }
 
@@ -98,7 +111,8 @@ class ToDoList extends Component {
             <ListItem
                 key={`${item.name}_${index}`}
                 data={item}
-                onStatusChange={e => this.onStatusChange(e)}
+                onChangeStatus={e => this.onChangeStatus(e)}
+                onDeleteTask={e => this.onDeleteTask(e)}
             />
         ));
 
