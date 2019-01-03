@@ -79,11 +79,14 @@ class ToDoList extends Component {
         this.setState(
             {
                 listData: [
-                    ...this.state.listData.filter(item => item.name !== name),
-                    {
-                        name,
-                        isDone
-                    }
+                    ...this.state.listData.map(item => {
+                        return item.name === name
+                            ? {
+                                  name,
+                                  isDone
+                              }
+                            : item;
+                    })
                 ]
             },
             this.storeData()
