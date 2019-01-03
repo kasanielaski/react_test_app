@@ -45,7 +45,7 @@ class ToDoList extends Component {
                 ],
                 inputValue: ''
             },
-            this.storeData()
+            this.storeData
         );
     }
 
@@ -79,17 +79,12 @@ class ToDoList extends Component {
         this.setState(
             {
                 listData: [
-                    ...this.state.listData.map(item => {
-                        return item.name === name
-                            ? {
-                                  name,
-                                  isDone
-                              }
-                            : item;
-                    })
+                    ...this.state.listData.map(item =>
+                        item.name === name ? { name, isDone } : item
+                    )
                 ]
             },
-            () => this.storeData()
+            this.storeData
         );
     }
 
@@ -102,7 +97,7 @@ class ToDoList extends Component {
                     })
                 ]
             },
-            () => this.storeData()
+            this.storeData
         );
     }
 
