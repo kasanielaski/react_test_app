@@ -88,6 +88,21 @@ class ToDoList extends Component {
         );
     }
 
+    onChangeName({ currentName, newName }) {
+        this.setState(
+            {
+                listData: [
+                    ...this.state.listData.map(item =>
+                        item.name === currentName
+                            ? { name: newName, ...item }
+                            : item
+                    )
+                ]
+            },
+            this.storeData
+        );
+    }
+
     onDeleteTask({ name }) {
         this.setState(
             {
@@ -107,6 +122,7 @@ class ToDoList extends Component {
                 key={`${item.name}_${index}`}
                 data={item}
                 onChangeStatus={e => this.onChangeStatus(e)}
+                onChangeName={e => this.onChangeName(e)}
                 onDeleteTask={e => this.onDeleteTask(e)}
             />
         ));
