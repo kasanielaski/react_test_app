@@ -94,7 +94,7 @@ class ToDoList extends Component {
                 listData: [
                     ...this.state.listData.map(item =>
                         item.name === currentName
-                            ? { name: newName, ...item }
+                            ? { ...item, name: newName }
                             : item
                     )
                 ]
