@@ -37,11 +37,11 @@ class ToDoList extends Component {
         this.setState(
             {
                 listData: [
-                    ...this.state.listData,
                     {
                         name: this.state.inputValue.toString(),
                         isDone: false
-                    }
+                    },
+                    ...this.state.listData
                 ],
                 inputValue: ''
             },
@@ -78,11 +78,9 @@ class ToDoList extends Component {
     onChangeStatus({ name, isDone }) {
         this.setState(
             {
-                listData: [
-                    ...this.state.listData.map(item =>
-                        item.name === name ? { name, isDone } : item
-                    )
-                ]
+                listData: this.state.listData.map(item =>
+                    item.name === name ? { name, isDone } : item
+                )
             },
             this.storeData
         );
@@ -91,13 +89,11 @@ class ToDoList extends Component {
     onChangeName({ currentName, newName }) {
         this.setState(
             {
-                listData: [
-                    ...this.state.listData.map(item =>
-                        item.name === currentName
-                            ? { ...item, name: newName }
-                            : item
-                    )
-                ]
+                listData: this.state.listData.map(item =>
+                    item.name === currentName
+                        ? { ...item, name: newName }
+                        : item
+                )
             },
             this.storeData
         );
@@ -106,11 +102,9 @@ class ToDoList extends Component {
     onDeleteTask({ name }) {
         this.setState(
             {
-                listData: [
-                    ...this.state.listData.filter(item => {
-                        return item.name !== name;
-                    })
-                ]
+                listData: this.state.listData.filter(item => {
+                    return item.name !== name;
+                })
             },
             this.storeData
         );
