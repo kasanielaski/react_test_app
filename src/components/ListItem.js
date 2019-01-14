@@ -48,7 +48,24 @@ class ListItem extends Component {
     }
 
     cancel() {
+        this.setState({
+            newName: this.props.data.name
+        });
+
         this.toggleEdit();
+    }
+
+    onKeyUp(event) {
+        switch (event.keyCode) {
+            case 13:
+                this.save();
+                break;
+            case 27:
+                this.cancel();
+                break;
+            default:
+                break;
+        }
     }
 
     render() {
@@ -61,6 +78,7 @@ class ListItem extends Component {
                     <input
                         type="text"
                         value={newName}
+                        onKeyUp={e => this.onKeyUp(e)}
                         onChange={e => this.updateName(e)}
                     />
                     <button onClick={() => this.save()}>save</button>
