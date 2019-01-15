@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import ListItem from './ListItem';
 
-describe('renders', () => {
+describe('ListItem', () => {
     let props;
     let mountedListItem;
 
@@ -16,7 +16,7 @@ describe('renders', () => {
     beforeEach(() => {
         props = {
             data: {
-                name: '',
+                name: 'default',
                 isDone: false
             },
             onChangeStatus: undefined,
@@ -26,52 +26,80 @@ describe('renders', () => {
         mountedListItem = undefined;
     });
 
-    it('render list elements', () => {
+    it('render ListItem', () => {
         const wrapper = listItem().find('li');
         expect(wrapper.length).toBeGreaterThan(0);
     });
 
     describe('list mode', () => {
-        it('correct render list mode', () => {
-            const wrapper = listItem().find('li');
-            expect(wrapper).toExist();
-            expect(wrapper.find({ type: 'checkbox' }).length).toBe(1);
-            expect(wrapper.find('span').length).toBe(1);
-            expect(wrapper.find('button').length).toBe(2);
-            expect(wrapper.find('button').get(0).props.children).toBe('edit');
-            expect(wrapper.find('button').get(1).props.children).toBe('delete');
+        describe('correct renders', () => {
+            it('correct list render', () => {
+                const wrapper = listItem().find('li');
+                expect(wrapper).toExist();
+                expect(wrapper.find({ type: 'checkbox' }).length).toBe(1);
+                expect(wrapper.find('span').length).toBe(1);
+                expect(wrapper.find('button').length).toBe(2);
+                expect(wrapper.find('button').get(0).props.children).toBe(
+                    'edit'
+                );
+                expect(wrapper.find('button').get(1).props.children).toBe(
+                    'delete'
+                );
+            });
+
+            it('correct span render', () => {
+                const wrapper = listItem();
+                const mockName = 'mockName';
+
+                expect(wrapper.find('span').props().children).toBe('default');
+                wrapper.setProps({
+                    data: {
+                        name: mockName,
+                        isDone: false
+                    }
+                });
+                expect(wrapper.find('span').props().children).toBe(mockName);
+            });
+
+            it('correct checkbox render', () => {
+                const wrapper = listItem();
+                const mockValue = true;
+
+                expect(wrapper.find({ type: 'checkbox' }).props().checked).toBe(
+                    false
+                );
+                wrapper.setProps({
+                    data: {
+                        name: '',
+                        isDone: mockValue
+                    }
+                });
+                expect(wrapper.find({ type: 'checkbox' }).props().checked).toBe(
+                    mockValue
+                );
+            });
         });
 
-        it('correct name render', () => {
-            const wrapper = listItem();
-            const mockName = 'mockName';
-
-            expect(wrapper.find('span').props().children).toBe('');
-            wrapper.setProps({
-                data: {
-                    name: mockName,
-                    isDone: false
-                }
+        describe('correct actions', () => {
+            it('correct `toggleEdit` action', () => {
+                const wrapper = listItem();
+                const instance = wrapper.instance();
+                jest.spyOn(instance, 'toggleEdit');
+                wrapper
+                    .find('button')
+                    .first()
+                    .simulate('click');
+                expect(instance.toggleEdit).toHaveBeenCalled();
+                expect(wrapper.state().isEdit).toBe(true);
             });
-            expect(wrapper.find('span').props().children).toBe(mockName);
-        });
 
-        it('correct checkbox value', () => {
-            const wrapper = listItem();
-            const mockValue = true;
-
-            expect(wrapper.find({ type: 'checkbox' }).props().checked).toBe(
-                false
-            );
-            wrapper.setProps({
-                data: {
-                    name: '',
-                    isDone: mockValue
-                }
-            });
-            expect(wrapper.find({ type: 'checkbox' }).props().checked).toBe(
-                mockValue
-            );
+            // it('correct `deleteTask` action', () => {
+            //     const wrapper = listItem();
+            //     const instance = wrapper.instance();
+            //     jest.spyOn(instance, 'deleteTask');
+            //     wrapper.find('button').last().simulate('click');
+            //     expect(instance.deleteTask).toHaveBeenCalled();
+            // });
         });
     });
 
@@ -83,13 +111,40 @@ describe('renders', () => {
             });
         });
 
-        it('correct render edit mode', () => {
-            const wrapper = listItem().find('li');
-            expect(wrapper).toExist();
-            expect(wrapper.find('input').length).toBe(1);
-            expect(wrapper.find('button').length).toBe(2);
-            expect(wrapper.find('button').get(0).props.children).toBe('save');
-            expect(wrapper.find('button').get(1).props.children).toBe('cancel');
+        describe('correct renders', () => {
+            it('correct edit mode render', () => {
+                const wrapper = listItem().find('li');
+                expect(wrapper).toExist();
+                expect(wrapper.find('input').length).toBe(1);
+                expect(wrapper.find('button').length).toBe(2);
+                expect(wrapper.find('button').get(0).props.children).toBe(
+                    'save'
+                );
+                expect(wrapper.find('button').get(1).props.children).toBe(
+                    'cancel'
+                );
+            });
+
+            it('correct input render', () => {
+                const wrapper = listItem();
+                const mockName = 'mockName';
+
+                expect(wrapper.find('input').props().value).toBe('default');
+                wrapper.setState({
+                    newName: mockName
+                });
+                expect(wrapper.find('input').props().value).toBe(mockName);
+            });
         });
+
+        // describe('correct actions', () => {
+        //     it('correct `save` action', () => {
+
+        //     });
+
+        //     it('correct `cancel` action', () => {
+
+        //     });
+        // });
     });
 });
