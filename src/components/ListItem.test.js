@@ -27,24 +27,69 @@ describe('renders', () => {
     });
 
     it('render list elements', () => {
-        const el = listItem().find('li');
-        expect(el.length).toBeGreaterThan(0);
+        const wrapper = listItem().find('li');
+        expect(wrapper.length).toBeGreaterThan(0);
     });
 
     describe('list mode', () => {
-        it('render list element correct', () => {
-            const el = listItem().find('li');
-            expect(el).toExist();
-            expect(el.find({ type: 'checkbox' }).length).toBe(1);
-            expect(el.find('span').length).toBe(1);
-            expect(el.find('button').length).toBe(2);
-            expect(
-                el
-                    .find('button')
-                    .first()
-                    .text()
-            ).toBe('edit');
-            console.log(el.props());
+        it('correct render list mode', () => {
+            const wrapper = listItem().find('li');
+            expect(wrapper).toExist();
+            expect(wrapper.find({ type: 'checkbox' }).length).toBe(1);
+            expect(wrapper.find('span').length).toBe(1);
+            expect(wrapper.find('button').length).toBe(2);
+            expect(wrapper.find('button').get(0).props.children).toBe('edit');
+            expect(wrapper.find('button').get(1).props.children).toBe('delete');
+        });
+
+        it('correct name render', () => {
+            const wrapper = listItem();
+            const mockName = 'mockName';
+
+            expect(wrapper.find('span').props().children).toBe('');
+            wrapper.setProps({
+                data: {
+                    name: mockName,
+                    isDone: false
+                }
+            });
+            expect(wrapper.find('span').props().children).toBe(mockName);
+        });
+
+        it('correct checkbox value', () => {
+            const wrapper = listItem();
+            const mockValue = true;
+
+            expect(wrapper.find({ type: 'checkbox' }).props().checked).toBe(
+                false
+            );
+            wrapper.setProps({
+                data: {
+                    name: '',
+                    isDone: mockValue
+                }
+            });
+            expect(wrapper.find({ type: 'checkbox' }).props().checked).toBe(
+                mockValue
+            );
+        });
+    });
+
+    describe('edit mode', () => {
+        beforeEach(() => {
+            const wrapper = listItem();
+            wrapper.setState({
+                isEdit: true
+            });
+        });
+
+        it('correct render edit mode', () => {
+            const wrapper = listItem().find('li');
+            expect(wrapper).toExist();
+            expect(wrapper.find('input').length).toBe(1);
+            expect(wrapper.find('button').length).toBe(2);
+            expect(wrapper.find('button').get(0).props.children).toBe('save');
+            expect(wrapper.find('button').get(1).props.children).toBe('cancel');
         });
     });
 });
