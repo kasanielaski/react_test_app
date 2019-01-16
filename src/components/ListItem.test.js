@@ -81,6 +81,16 @@ describe('ListItem', () => {
         });
 
         describe('correct actions', () => {
+            it('correct `changeStatus` action', () => {
+                props.onChangeStatus = jest.fn();
+                const wrapper = listItem();
+                const instance = wrapper.instance();
+
+                jest.spyOn(instance, 'changeStatus');
+                wrapper.find({ type: 'checkbox' }).simulate('change');
+                expect(instance.changeStatus).toHaveBeenCalled();
+            });
+
             it('correct `toggleEdit` action', () => {
                 const wrapper = listItem();
                 const instance = wrapper.instance();
@@ -93,13 +103,18 @@ describe('ListItem', () => {
                 expect(wrapper.state().isEdit).toBe(true);
             });
 
-            // it('correct `deleteTask` action', () => {
-            //     const wrapper = listItem();
-            //     const instance = wrapper.instance();
-            //     jest.spyOn(instance, 'deleteTask');
-            //     wrapper.find('button').last().simulate('click');
-            //     expect(instance.deleteTask).toHaveBeenCalled();
-            // });
+            it('correct `deleteTask` action', () => {
+                props.onDeleteTask = jest.fn();
+                const wrapper = listItem();
+                const instance = wrapper.instance();
+
+                jest.spyOn(instance, 'deleteTask');
+                wrapper
+                    .find('button')
+                    .last()
+                    .simulate('click');
+                expect(instance.deleteTask).toHaveBeenCalled();
+            });
         });
     });
 
@@ -137,14 +152,29 @@ describe('ListItem', () => {
             });
         });
 
-        // describe('correct actions', () => {
-        //     it('correct `save` action', () => {
+        describe('correct actions', () => {
+            it('correct `save` action', () => {
+                const wrapper = listItem();
+                const instance = wrapper.instance();
+                jest.spyOn(instance, 'save');
+                wrapper
+                    .find('button')
+                    .first()
+                    .simulate('click');
+                expect(instance.save).toHaveBeenCalled();
+            });
 
-        //     });
-
-        //     it('correct `cancel` action', () => {
-
-        //     });
-        // });
+            it('correct `cancel` action', () => {
+                const wrapper = listItem();
+                const instance = wrapper.instance();
+                jest.spyOn(instance, 'cancel');
+                wrapper
+                    .find('button')
+                    .last()
+                    .simulate('click');
+                expect(instance.cancel).toHaveBeenCalled();
+                expect(wrapper.state().isEdit).toBe(false);
+            });
+        });
     });
 });
