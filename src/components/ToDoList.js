@@ -142,7 +142,11 @@ class ToDoList extends Component {
                     onKeyUp={e => this.onKeyUp(e)}
                     onChange={e => this.onChange(e)}
                 />
-                <Button marginLeft={8} onClick={() => this.addItem()}>
+                <Button
+                    marginLeft={8}
+                    iconBefore="add"
+                    onClick={() => this.addItem()}
+                >
                     add task
                 </Button>
                 <List>{listitems}</List>

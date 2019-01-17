@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-// import { TextInput, Button } from 'evergreen-ui';
+import { Checkbox, Button, TextInput } from 'evergreen-ui';
 import styled from 'styled-components';
 
 const ListElement = styled.li`
     display: flex;
     justify-content: space-between;
+    align-items: center;
 `;
 
 class ListItem extends Component {
@@ -22,6 +23,7 @@ class ListItem extends Component {
             isDone: !this.props.data.isDone
         });
     }
+    span;
 
     deleteTask() {
         this.props.onDeleteTask({
@@ -83,7 +85,8 @@ class ListItem extends Component {
             return (
                 <ListElement>
                     <div>
-                        <input
+                        <TextInput
+                            height={24}
                             type="text"
                             value={newName}
                             onKeyUp={e => this.onKeyUp(e)}
@@ -92,8 +95,26 @@ class ListItem extends Component {
                     </div>
 
                     <div>
-                        <button onClick={() => this.save()}>save</button>
-                        <button onClick={() => this.cancel()}>cancel</button>
+                        <Button
+                            marginLeft={8}
+                            height={24}
+                            iconBefore="updated"
+                            appearance="primary"
+                            intent="success"
+                            onClick={() => this.save()}
+                        >
+                            save
+                        </Button>
+                        <Button
+                            marginLeft={8}
+                            height={24}
+                            iconBefore="undo"
+                            appearance="primary"
+                            intent="warning"
+                            onClick={() => this.cancel()}
+                        >
+                            cancel
+                        </Button>
                     </div>
                 </ListElement>
             );
@@ -101,19 +122,34 @@ class ListItem extends Component {
             return (
                 <ListElement>
                     <div>
-                        <input
+                        <Checkbox
                             type="checkbox"
                             checked={isDone}
+                            label={name}
                             onChange={() => this.changeStatus()}
                         />
-                        <span>{name}</span>
                     </div>
 
                     <div>
-                        <button onClick={() => this.toggleEdit()}>edit</button>
-                        <button onClick={() => this.deleteTask()}>
+                        <Button
+                            height={24}
+                            iconBefore="edit"
+                            appearance="primary"
+                            intent="none"
+                            onClick={() => this.toggleEdit()}
+                        >
+                            edit
+                        </Button>
+                        <Button
+                            height={24}
+                            marginLeft={8}
+                            iconBefore="delete"
+                            appearance="primary"
+                            intent="danger"
+                            onClick={() => this.deleteTask()}
+                        >
                             delete
-                        </button>
+                        </Button>
                     </div>
                 </ListElement>
             );
