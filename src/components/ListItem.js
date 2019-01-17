@@ -1,4 +1,11 @@
 import React, { Component } from 'react';
+// import { TextInput, Button } from 'evergreen-ui';
+import styled from 'styled-components';
+
+const ListElement = styled.li`
+    display: flex;
+    justify-content: space-between;
+`;
 
 class ListItem extends Component {
     constructor(props) {
@@ -74,29 +81,41 @@ class ListItem extends Component {
 
         if (isEdit) {
             return (
-                <li>
-                    <input
-                        type="text"
-                        value={newName}
-                        onKeyUp={e => this.onKeyUp(e)}
-                        onChange={e => this.updateName(e)}
-                    />
-                    <button onClick={() => this.save()}>save</button>
-                    <button onClick={() => this.cancel()}>cancel</button>
-                </li>
+                <ListElement>
+                    <div>
+                        <input
+                            type="text"
+                            value={newName}
+                            onKeyUp={e => this.onKeyUp(e)}
+                            onChange={e => this.updateName(e)}
+                        />
+                    </div>
+
+                    <div>
+                        <button onClick={() => this.save()}>save</button>
+                        <button onClick={() => this.cancel()}>cancel</button>
+                    </div>
+                </ListElement>
             );
         } else {
             return (
-                <li>
-                    <input
-                        type="checkbox"
-                        checked={isDone}
-                        onChange={() => this.changeStatus()}
-                    />
-                    <span>{name}</span>
-                    <button onClick={() => this.toggleEdit()}>edit</button>
-                    <button onClick={() => this.deleteTask()}>delete</button>
-                </li>
+                <ListElement>
+                    <div>
+                        <input
+                            type="checkbox"
+                            checked={isDone}
+                            onChange={() => this.changeStatus()}
+                        />
+                        <span>{name}</span>
+                    </div>
+
+                    <div>
+                        <button onClick={() => this.toggleEdit()}>edit</button>
+                        <button onClick={() => this.deleteTask()}>
+                            delete
+                        </button>
+                    </div>
+                </ListElement>
             );
         }
     }
