@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
+import { TextInput, Button } from 'evergreen-ui';
+import styled from 'styled-components';
 import ListItem from './ListItem';
 import { LOCAL_STORAGE_KEY } from '../config';
+
+const Wrapper = styled.div`
+    box-shadow: -3px 3px 8px 0 #c3c3c3;
+    border-radius: 2px;
+    padding: 16px;
+`;
+
+const List = styled.ul`
+    margin-top: 8px;
+`;
 
 class ToDoList extends Component {
     constructor(props) {
@@ -122,16 +134,19 @@ class ToDoList extends Component {
         ));
 
         return (
-            <div>
-                <input
+            <Wrapper>
+                <TextInput
                     type="text"
+                    placeholder="Input task"
                     value={this.state.inputValue}
                     onKeyUp={e => this.onKeyUp(e)}
                     onChange={e => this.onChange(e)}
                 />
-                <button onClick={() => this.addItem()}>add task</button>
-                <ul>{listitems}</ul>
-            </div>
+                <Button marginLeft={8} onClick={() => this.addItem()}>
+                    add task
+                </Button>
+                <List>{listitems}</List>
+            </Wrapper>
         );
     }
 }
