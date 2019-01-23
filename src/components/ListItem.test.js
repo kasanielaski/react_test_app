@@ -1,6 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import ListItem from './ListItem';
+import ListItem, { ListElement } from './ListItem';
+import { Checkbox } from 'evergreen-ui/commonjs/checkbox';
+import { Button } from 'evergreen-ui';
+import TextInput from 'evergreen-ui/commonjs/text-input/src/TextInput';
 
 describe('ListItem', () => {
     let props;
@@ -27,56 +30,51 @@ describe('ListItem', () => {
     });
 
     it('render ListItem', () => {
-        const wrapper = listItem().find('li');
-        expect(wrapper.length).toBeGreaterThan(0);
+        const wrapper = listItem();
+        expect(wrapper.find(ListElement).length).toBeGreaterThan(0);
     });
 
     describe('list mode', () => {
         describe('correct renders', () => {
             it('correct list render', () => {
-                const wrapper = listItem().find('li');
-                expect(wrapper).toExist();
-                expect(wrapper.find({ type: 'checkbox' }).length).toBe(1);
-                expect(wrapper.find('span').length).toBe(1);
-                expect(wrapper.find('button').length).toBe(2);
-                expect(wrapper.find('button').get(0).props.children).toBe(
-                    'edit'
+                const wrapper = listItem();
+                expect(wrapper.find(Checkbox).length).toBe(1);
+                expect(wrapper.find(Button).length).toBe(2);
+                expect(wrapper.find(Checkbox).props().label).toBe(
+                    wrapper.instance().props.data.name
                 );
-                expect(wrapper.find('button').get(1).props.children).toBe(
+                expect(wrapper.find(Button).get(0).props.children).toBe('edit');
+                expect(wrapper.find(Button).get(1).props.children).toBe(
                     'delete'
                 );
             });
 
-            it('correct span render', () => {
+            it('correct checkbox label render', () => {
                 const wrapper = listItem();
                 const mockName = 'mockName';
 
-                expect(wrapper.find('span').props().children).toBe('default');
+                expect(wrapper.find(Checkbox).props().label).toBe('default');
                 wrapper.setProps({
                     data: {
                         name: mockName,
                         isDone: false
                     }
                 });
-                expect(wrapper.find('span').props().children).toBe(mockName);
+                expect(wrapper.find(Checkbox).props().label).toBe(mockName);
             });
 
             it('correct checkbox render', () => {
                 const wrapper = listItem();
                 const mockValue = true;
 
-                expect(wrapper.find({ type: 'checkbox' }).props().checked).toBe(
-                    false
-                );
+                expect(wrapper.find(Checkbox).props().checked).toBe(false);
                 wrapper.setProps({
                     data: {
                         name: '',
                         isDone: mockValue
                     }
                 });
-                expect(wrapper.find({ type: 'checkbox' }).props().checked).toBe(
-                    mockValue
-                );
+                expect(wrapper.find(Checkbox).props().checked).toBe(mockValue);
             });
         });
 
@@ -87,7 +85,7 @@ describe('ListItem', () => {
                 const instance = wrapper.instance();
 
                 jest.spyOn(instance, 'changeStatus');
-                wrapper.find({ type: 'checkbox' }).simulate('change');
+                wrapper.find(Checkbox).simulate('change');
                 expect(instance.changeStatus).toHaveBeenCalled();
             });
 
@@ -96,7 +94,7 @@ describe('ListItem', () => {
                 const instance = wrapper.instance();
                 jest.spyOn(instance, 'toggleEdit');
                 wrapper
-                    .find('button')
+                    .find(Button)
                     .first()
                     .simulate('click');
                 expect(instance.toggleEdit).toHaveBeenCalled();
@@ -110,7 +108,7 @@ describe('ListItem', () => {
 
                 jest.spyOn(instance, 'deleteTask');
                 wrapper
-                    .find('button')
+                    .find(Button)
                     .last()
                     .simulate('click');
                 expect(instance.deleteTask).toHaveBeenCalled();
@@ -128,14 +126,12 @@ describe('ListItem', () => {
 
         describe('correct renders', () => {
             it('correct edit mode render', () => {
-                const wrapper = listItem().find('li');
-                expect(wrapper).toExist();
-                expect(wrapper.find('input').length).toBe(1);
-                expect(wrapper.find('button').length).toBe(2);
-                expect(wrapper.find('button').get(0).props.children).toBe(
-                    'save'
-                );
-                expect(wrapper.find('button').get(1).props.children).toBe(
+                const wrapper = listItem();
+                expect(wrapper.find(ListElement).length).toBe(1);
+                expect(wrapper.find(TextInput).length).toBe(1);
+                expect(wrapper.find(Button).length).toBe(2);
+                expect(wrapper.find(Button).get(0).props.children).toBe('save');
+                expect(wrapper.find(Button).get(1).props.children).toBe(
                     'cancel'
                 );
             });
@@ -144,11 +140,11 @@ describe('ListItem', () => {
                 const wrapper = listItem();
                 const mockName = 'mockName';
 
-                expect(wrapper.find('input').props().value).toBe('default');
+                expect(wrapper.find(TextInput).props().value).toBe('default');
                 wrapper.setState({
                     newName: mockName
                 });
-                expect(wrapper.find('input').props().value).toBe(mockName);
+                expect(wrapper.find(TextInput).props().value).toBe(mockName);
             });
         });
 
@@ -158,7 +154,7 @@ describe('ListItem', () => {
                 const instance = wrapper.instance();
                 jest.spyOn(instance, 'save');
                 wrapper
-                    .find('button')
+                    .find(Button)
                     .first()
                     .simulate('click');
                 expect(instance.save).toHaveBeenCalled();
@@ -169,7 +165,7 @@ describe('ListItem', () => {
                 const instance = wrapper.instance();
                 jest.spyOn(instance, 'cancel');
                 wrapper
-                    .find('button')
+                    .find(Button)
                     .last()
                     .simulate('click');
                 expect(instance.cancel).toHaveBeenCalled();

@@ -1,6 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import ToDoList from './ToDoList';
+import { TextInput } from 'evergreen-ui/commonjs/text-input';
+import { Button } from 'evergreen-ui';
+import ListItem from './ListItem';
 
 describe('ToDoList', () => {
     let mountedToDoList;
@@ -24,16 +27,14 @@ describe('ToDoList', () => {
     describe('correct default render', () => {
         it('correct render default state', () => {
             const wrapper = toDoList();
-            const container = wrapper.find('div');
 
-            expect(container.find('input').length).toBeGreaterThan(0);
-            expect(container.find('button').length).toBeGreaterThan(0);
-            expect(container.find('ul').length).toBeGreaterThan(0);
+            expect(wrapper.find(TextInput).length).toBe(1);
+            expect(wrapper.find(Button).length).toBe(1);
         });
 
         it('correct input render', () => {
             const wrapper = toDoList();
-            expect(wrapper.find('input').props().value).toBe(
+            expect(wrapper.find(TextInput).props().value).toBe(
                 wrapper.state().inputValue
             );
         });
@@ -41,15 +42,13 @@ describe('ToDoList', () => {
         it('correct ul render', () => {
             const wrapper = toDoList();
 
-            expect(wrapper.find('ul').children().length).toBe(0);
+            expect(wrapper.find(ListItem).length).toBe(0);
         });
     });
 
     describe('correct mock state render', () => {
         it('correct listItems render', () => {
             const wrapper = toDoList();
-
-            expect(wrapper.find('ul').children().length).toBe(0);
             wrapper.setState({
                 listData: [
                     {
@@ -58,42 +57,12 @@ describe('ToDoList', () => {
                     }
                 ]
             });
-            expect(wrapper.find('ul').children().length).toBe(1);
-            expect(
-                wrapper
-                    .find('ul')
-                    .children()
-                    .at(0)
-                    .key()
-            ).toBe(`${wrapper.state().listData[0].name}_0`);
-            expect(
-                wrapper
-                    .find('ul')
-                    .children()
-                    .at(0)
-                    .props().data
-            ).toBe(wrapper.state().listData[0]);
-            expect(
-                wrapper
-                    .find('ul')
-                    .children()
-                    .at(0)
-                    .props().onChangeStatus
-            ).toBeDefined();
-            expect(
-                wrapper
-                    .find('ul')
-                    .children()
-                    .at(0)
-                    .props().onChangeName
-            ).toBeDefined();
-            expect(
-                wrapper
-                    .find('ul')
-                    .children()
-                    .at(0)
-                    .props().onDeleteTask
-            ).toBeDefined();
+            const item = wrapper.find(ListItem);
+            expect(item.length).toBe(1);
+            expect(item.props().data).toEqual(wrapper.state().listData[0]);
+            expect(item.props().onChangeStatus).toBeDefined();
+            expect(item.props().onChangeName).toBeDefined();
+            expect(item.props().onDeleteTask).toBeDefined();
         });
     });
 
@@ -103,7 +72,7 @@ describe('ToDoList', () => {
             const instance = wrapper.instance();
             jest.spyOn(instance, 'addItem');
 
-            wrapper.find('button').simulate('click');
+            wrapper.find(Button).simulate('click');
             expect(instance.addItem).toHaveBeenCalled();
             expect(wrapper.state().listData.length).toBe(0);
         });
@@ -116,7 +85,7 @@ describe('ToDoList', () => {
             wrapper.setState({
                 inputValue: 'name'
             });
-            wrapper.find('button').simulate('click');
+            wrapper.find(Button).simulate('click');
             expect(instance.addItem).toHaveBeenCalled();
             expect(wrapper.state().listData.length).toBe(1);
         });

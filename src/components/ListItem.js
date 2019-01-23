@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Checkbox, Button, TextInput } from 'evergreen-ui';
 import styled from 'styled-components';
 
-const ListElement = styled.li`
+export const ListElement = styled.li`
     display: flex;
     justify-content: space-between;
     align-items: center;
