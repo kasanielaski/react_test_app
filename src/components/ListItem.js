@@ -84,73 +84,65 @@ class ListItem extends Component {
         if (isEdit) {
             return (
                 <ListElement>
-                    <div>
-                        <TextInput
-                            height={24}
-                            type="text"
-                            value={newName}
-                            onKeyUp={e => this.onKeyUp(e)}
-                            onChange={e => this.updateName(e)}
-                        />
-                    </div>
+                    <TextInput
+                        height={24}
+                        type="text"
+                        value={newName}
+                        onKeyUp={e => this.onKeyUp(e)}
+                        onChange={e => this.updateName(e)}
+                    />
 
-                    <div>
-                        <Button
-                            marginLeft={8}
-                            height={24}
-                            iconBefore="updated"
-                            appearance="primary"
-                            intent="success"
-                            onClick={() => this.save()}
-                        >
-                            save
-                        </Button>
-                        <Button
-                            marginLeft={8}
-                            height={24}
-                            iconBefore="undo"
-                            appearance="primary"
-                            intent="warning"
-                            onClick={() => this.cancel()}
-                        >
-                            cancel
-                        </Button>
-                    </div>
+                    <Button
+                        marginLeft={8}
+                        height={24}
+                        iconBefore="updated"
+                        appearance="primary"
+                        intent="success"
+                        onClick={() => this.save()}
+                    >
+                        save
+                    </Button>
+                    <Button
+                        marginLeft={8}
+                        height={24}
+                        iconBefore="undo"
+                        appearance="primary"
+                        intent="warning"
+                        onClick={() => this.cancel()}
+                    >
+                        cancel
+                    </Button>
                 </ListElement>
             );
         } else {
             return (
                 <ListElement>
-                    <div>
-                        <Checkbox
-                            type="checkbox"
-                            checked={isDone}
-                            label={name}
-                            onChange={() => this.changeStatus()}
-                        />
-                    </div>
+                    <Checkbox
+                        type="checkbox"
+                        checked={isDone}
+                        label={name}
+                        onChange={() => this.changeStatus()}
+                    />
 
-                    <div>
-                        <Button
-                            height={24}
-                            iconBefore="edit"
-                            appearance="primary"
-                            intent="none"
-                            onClick={() => this.toggleEdit()}
-                        >
-                            edit
-                        </Button>
-                        <Button
-                            height={24}
-                            marginLeft={8}
-                            iconBefore="delete"
-                            appearance="primary"
-                            intent="danger"
-                            onClick={() => this.deleteTask()}
-                        >
-                            delete
-                        </Button>
-                    </div>
+                    <Button
+                        height={24}
+                        iconBefore="edit"
+                        appearance="primary"
+                        intent="none"
+                        onClick={() => this.toggleEdit()}
+                    >
+                        edit
+                    </Button>
+                    <Button
+                        height={24}
+                        marginLeft={8}
+                        iconBefore="delete"
+                        appearance="primary"
+                        intent="danger"
+                        onClick={() => this.deleteTask()}
+                    >
+                        delete
+                    </Button>
                 </ListElement>
             );
         }
