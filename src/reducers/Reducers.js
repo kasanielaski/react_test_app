@@ -1,4 +1,4 @@
-import { combinedReducers } from 'redux';
+import { combineReducers } from 'redux';
 import { LOCAL_STORAGE_KEY } from '../config';
 import {
     LOAD_STORE,
@@ -7,9 +7,9 @@ import {
     DELETE_TODO,
     CHANGE_TODO_STATUS,
     CHANGE_TODO_NAME
-} from '../actions';
+} from '../actions/ActionType';
 
-const localStore = (state, action) => {
+const localStore = (state = [], action) => {
     switch (action.type) {
         case LOAD_STORE:
             return (state = [
@@ -23,23 +23,23 @@ const localStore = (state, action) => {
     }
 };
 
-const todos = (state, action) => {
+const todos = (state = [], action) => {
     switch (action.type) {
         case ADD_TODO:
             return [
                 {
-                    name: action.name,
+                    name: action.payload,
                     isDone: false
                 },
                 ...state
             ];
         case DELETE_TODO:
             return state.filter(({ name }) => {
-                return name !== action.name;
+                return name !== action.payload;
             });
         case CHANGE_TODO_STATUS:
             return state.map(({ name, isDone }) =>
-                name === action.name
+                name === action.payload
                     ? { name, isDone: !isDone }
                     : { name, isDone }
             );
@@ -54,7 +54,9 @@ const todos = (state, action) => {
     }
 };
 
-export default combinedReducers({
+const todoApp = combineReducers({
     localStore,
     todos
 });
+
+export default todoApp;

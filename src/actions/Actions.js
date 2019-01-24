@@ -16,24 +16,24 @@ export const saveStore = payload => {
     };
 };
 
-export const addTodo = name => {
+export const addTodo = payload => {
     return {
         type: ADD_TODO,
-        name
+        payload
     };
 };
 
-export const deleteTodo = name => {
+export const deleteTodo = payload => {
     return {
         type: DELETE_TODO,
-        name
+        payload
     };
 };
 
-export const changeTodoStatus = name => {
+export const changeTodoStatus = payload => {
     return {
         type: CHANGE_TODO_STATUS,
-        name
+        payload
     };
 };
 
