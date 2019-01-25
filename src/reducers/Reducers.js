@@ -9,22 +9,19 @@ import {
     CHANGE_TODO_NAME
 } from '../actions/ActionType';
 
-const localStore = (state = [], action) => {
-    switch (action.type) {
-        case LOAD_STORE:
-            return (state = [
-                ...state,
-                localStorage.getItem(LOCAL_STORAGE_KEY)
-            ]);
-        case SAVE_STORE:
-            return localStore.setItem(LOCAL_STORAGE_KEY, action.payload);
-        default:
-            return state;
-    }
-};
-
 const todos = (state = [], action) => {
     switch (action.type) {
+        case LOAD_STORE:
+            const formattedData = JSON.parse(
+                localStorage.getItem(LOCAL_STORAGE_KEY)
+            );
+
+            return (state = [...formattedData]);
+        case SAVE_STORE:
+            const rawData = JSON.stringify(state);
+            localStorage.setItem(LOCAL_STORAGE_KEY, rawData);
+
+            return state;
         case ADD_TODO:
             return [
                 {
@@ -44,9 +41,10 @@ const todos = (state = [], action) => {
                     : { name, isDone }
             );
         case CHANGE_TODO_NAME:
+            const { currentName, newName } = action.payload;
             return state.map(({ name, isDone }) =>
-                name === action.payload.currentName
-                    ? { isDone, name: action.payload.newName }
+                name === currentName
+                    ? { isDone, name: newName }
                     : { isDone, name }
             );
         default:
@@ -55,7 +53,6 @@ const todos = (state = [], action) => {
 };
 
 const todoApp = combineReducers({
-    localStore,
     todos
 });
 

@@ -9,12 +9,7 @@ import {
 
 export const loadStore = () => ({ type: LOAD_STORE });
 
-export const saveStore = payload => {
-    return {
-        type: SAVE_STORE,
-        payload
-    };
-};
+export const saveStore = () => ({ type: SAVE_STORE });
 
 export const addTodo = payload => {
     return {

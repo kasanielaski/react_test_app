@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Checkbox, Button, TextInput } from 'evergreen-ui';
 import styled from 'styled-components';
+import {
+    deleteTodo,
+    changeTodoStatus,
+    changeTodoName,
+    saveStore
+} from '../actions/Actions';
+
+const mapDispathToProps = {
+    deleteTodo,
+    changeTodoStatus,
+    changeTodoName,
+    saveStore
+};
 
 export const ListElement = styled.li`
     display: flex;
@@ -18,17 +32,13 @@ class ListItem extends Component {
     }
 
     changeStatus() {
-        this.props.onChangeStatus({
-            name: this.props.data.name,
-            isDone: !this.props.data.isDone
-        });
+        this.props.changeTodoStatus(this.props.data.name);
+        this.props.saveStore();
     }
-    span;
 
     deleteTask() {
-        this.props.onDeleteTask({
-            name: this.props.data.name
-        });
+        this.props.deleteTodo(this.props.data.name);
+        this.props.saveStore();
     }
 
     toggleEdit() {
@@ -37,9 +47,9 @@ class ListItem extends Component {
         });
     }
 
-    updateName(e) {
+    updateName({ target: { value } }) {
         this.setState({
-            newName: e.target.value
+            newName: value
         });
     }
 
@@ -48,10 +58,11 @@ class ListItem extends Component {
         const { newName } = this.state;
         if (name === newName) return;
 
-        this.props.onChangeName({
+        this.props.changeTodoName({
             currentName: name,
             newName
         });
+        this.props.saveStore();
 
         this.toggleEdit();
     }
@@ -149,4 +160,7 @@ class ListItem extends Component {
     }
 }
 
-export default ListItem;
+export default connect(
+    null,
+    mapDispathToProps
+)(ListItem);

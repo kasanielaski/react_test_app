@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { TextInput, Button } from 'evergreen-ui';
 import styled from 'styled-components';
 import ListItem from './ListItem';
-import { LOCAL_STORAGE_KEY } from '../config';
+import { loadStore, saveStore, addTodo } from '../actions/Actions';
+
+const mapStateToProps = state => state;
+
+const mapDispathToProps = {
+    loadStore,
+    saveStore,
+    addTodo
+};
 
 const Wrapper = styled.div`
     box-shadow: -3px 3px 8px 0 #c3c3c3;
@@ -18,62 +27,38 @@ class ToDoList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            listData: [],
-            inputValue: ''
+            input: ''
         };
     }
 
     componentWillMount() {
         try {
-            if (
-                this.state.listData.length === 0 &&
-                localStorage.getItem(LOCAL_STORAGE_KEY) !== null
-            ) {
-                const listData = JSON.parse(
-                    localStorage.getItem(LOCAL_STORAGE_KEY)
-                );
-                this.setState({
-                    listData
-                });
-            }
+            this.props.loadStore();
         } catch (error) {
             throw new Error(`there is problem with localStorage: ${error}`);
         }
     }
 
     addItem() {
-        if (this.state.inputValue.trim() === '') {
+        if (this.state.input.trim() === '') {
             return;
         }
 
-        this.setState(
-            {
-                listData: [
-                    {
-                        name: this.state.inputValue.toString(),
-                        isDone: false
-                    },
-                    ...this.state.listData
-                ],
-                inputValue: ''
-            },
-            this.storeData
-        );
+        this.props.addTodo(this.state.input);
+        this.props.saveStore();
+        this.setState({
+            input: ''
+        });
     }
 
-    storeData() {
-        const formattedData = JSON.stringify(this.state.listData);
-        localStorage.setItem(LOCAL_STORAGE_KEY, formattedData);
-    }
-
-    onKeyUp(event) {
-        switch (event.keyCode) {
+    onKeyUp({ keyCode }) {
+        switch (keyCode) {
             case 13:
                 this.addItem();
                 break;
             case 27:
                 this.setState({
-                    inputValue: ''
+                    input: ''
                 });
                 break;
             default:
@@ -81,56 +66,15 @@ class ToDoList extends Component {
         }
     }
 
-    onChange(event) {
+    onChange({ target: { value } }) {
         this.setState({
-            inputValue: event.target.value
+            input: value
         });
     }
 
-    onChangeStatus({ name, isDone }) {
-        this.setState(
-            {
-                listData: this.state.listData.map(item =>
-                    item.name === name ? { name, isDone } : item
-                )
-            },
-            this.storeData
-        );
-    }
-
-    onChangeName({ currentName, newName }) {
-        this.setState(
-            {
-                listData: this.state.listData.map(item =>
-                    item.name === currentName
-                        ? { ...item, name: newName }
-                        : item
-                )
-            },
-            this.storeData
-        );
-    }
-
-    onDeleteTask({ name }) {
-        this.setState(
-            {
-                listData: this.state.listData.filter(item => {
-                    return item.name !== name;
-                })
-            },
-            this.storeData
-        );
-    }
-
     render() {
-        const listitems = this.state.listData.map((item, index) => (
-            <ListItem
-                key={`${item.name}_${index}`}
-                data={item}
-                onChangeStatus={e => this.onChangeStatus(e)}
-                onChangeName={e => this.onChangeName(e)}
-                onDeleteTask={e => this.onDeleteTask(e)}
-            />
+        const listitems = this.props.todos.map((item, index) => (
+            <ListItem key={`${item.name}_${index}`} data={item} />
         ));
 
         return (
@@ -138,7 +82,7 @@ class ToDoList extends Component {
                 <TextInput
                     type="text"
                     placeholder="Input task"
-                    value={this.state.inputValue}
+                    value={this.state.input}
                     onKeyUp={e => this.onKeyUp(e)}
                     onChange={e => this.onChange(e)}
                 />
@@ -155,4 +99,7 @@ class ToDoList extends Component {
     }
 }
 
-export default ToDoList;
+export default connect(
+    mapStateToProps,
+    mapDispathToProps
+)(ToDoList);
