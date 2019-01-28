@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+
 import { LOCAL_STORAGE_KEY } from '../config';
 import {
     LOAD_STORE,
