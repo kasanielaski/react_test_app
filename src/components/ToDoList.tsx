@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, SyntheticEvent } from 'react';
 import { connect } from 'react-redux';
+// @ts-ignore
 import { TextInput, Button } from 'evergreen-ui';
 import styled from 'styled-components';
 import ListItem from './ListItem';
+import { IToDoListProps, IToDoListState } from '../interfaces';
 import { loadStore, saveStore, addTodo } from '../actions/Actions';
 
-const mapStateToProps = state => state;
+const mapStateToProps = (state: IToDoListProps) => state;
 
 const mapDispathToProps = {
     loadStore,
@@ -23,15 +25,15 @@ const List = styled.ul`
     margin-top: 8px;
 `;
 
-class ToDoList extends Component {
-    constructor(props) {
+class ToDoList extends Component<IToDoListProps, IToDoListState> {
+    constructor(props: IToDoListProps) {
         super(props);
         this.state = {
             input: ''
         };
     }
 
-    componentWillMount() {
+    componentWillMount(): void {
         try {
             this.props.loadStore();
         } catch (error) {
@@ -39,8 +41,8 @@ class ToDoList extends Component {
         }
     }
 
-    addItem() {
-        if (this.state.input.trim() === '') {
+    addItem(): void {
+        if (this.state.input!.trim() === '') {
             return;
         }
 
@@ -51,7 +53,7 @@ class ToDoList extends Component {
         });
     }
 
-    onKeyUp({ keyCode }) {
+    onKeyUp({ keyCode }: KeyboardEvent): void {
         switch (keyCode) {
             case 13:
                 this.addItem();
@@ -66,14 +68,14 @@ class ToDoList extends Component {
         }
     }
 
-    onChange({ target: { value } }) {
+    onChange({ target: { value } }: any): void {
         this.setState({
             input: value
         });
     }
 
     render() {
-        const listitems = this.props.todos.map((item, index) => (
+        const listitems = this.props.todos.map((item: any, index: number) => (
             <ListItem key={`${item.name}_${index}`} data={item} />
         ));
 
@@ -83,8 +85,8 @@ class ToDoList extends Component {
                     type="text"
                     placeholder="Input task"
                     value={this.state.input}
-                    onKeyUp={e => this.onKeyUp(e)}
-                    onChange={e => this.onChange(e)}
+                    onKeyUp={(e: KeyboardEvent) => this.onKeyUp(e)}
+                    onChange={(e: SyntheticEvent) => this.onChange(e)}
                 />
                 <Button
                     marginLeft={8}

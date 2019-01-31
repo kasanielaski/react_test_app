@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+// @ts-ignore
 import { Checkbox, Button, TextInput } from 'evergreen-ui';
 import styled from 'styled-components';
+import { IListItemProps, IListItemState } from '../interfaces';
 import {
     deleteTodo,
     changeTodoStatus,
@@ -22,8 +24,8 @@ export const ListElement = styled.li`
     align-items: center;
 `;
 
-class ListItem extends Component {
-    constructor(props) {
+class ListItem extends Component<IListItemProps, IListItemState> {
+    constructor(props: IListItemProps) {
         super(props);
         this.state = {
             isEdit: false,
@@ -31,29 +33,29 @@ class ListItem extends Component {
         };
     }
 
-    changeStatus() {
+    changeStatus(): void {
         this.props.changeTodoStatus(this.props.data.name);
         this.props.saveStore();
     }
 
-    deleteTask() {
+    deleteTask(): void {
         this.props.deleteTodo(this.props.data.name);
         this.props.saveStore();
     }
 
-    toggleEdit() {
+    toggleEdit(): void {
         this.setState({
             isEdit: !this.state.isEdit
         });
     }
 
-    updateName({ target: { value } }) {
+    updateName({ target: { value } }: any): void {
         this.setState({
             newName: value
         });
     }
 
-    save() {
+    save(): void {
         const { name } = this.props.data;
         const { newName } = this.state;
         if (name === newName) return;
@@ -67,7 +69,7 @@ class ListItem extends Component {
         this.toggleEdit();
     }
 
-    cancel() {
+    cancel(): void {
         this.setState({
             newName: this.props.data.name
         });
@@ -75,8 +77,8 @@ class ListItem extends Component {
         this.toggleEdit();
     }
 
-    onKeyUp(event) {
-        switch (event.keyCode) {
+    onKeyUp({ keyCode }: KeyboardEvent): void {
+        switch (keyCode) {
             case 13:
                 this.save();
                 break;
@@ -99,30 +101,31 @@ class ListItem extends Component {
                         height={24}
                         type="text"
                         value={newName}
-                        onKeyUp={e => this.onKeyUp(e)}
-                        onChange={e => this.updateName(e)}
+                        onKeyUp={(e: KeyboardEvent) => this.onKeyUp(e)}
+                        onChange={(e: any) => this.updateName(e)}
                     />
-
-                    <Button
-                        marginLeft={8}
-                        height={24}
-                        iconBefore="updated"
-                        appearance="primary"
-                        intent="success"
-                        onClick={() => this.save()}
-                    >
-                        save
-                    </Button>
-                    <Button
-                        marginLeft={8}
-                        height={24}
-                        iconBefore="undo"
-                        appearance="primary"
-                        intent="warning"
-                        onClick={() => this.cancel()}
-                    >
-                        cancel
-                    </Button>
+                    <div>
+                        <Button
+                            marginLeft={8}
+                            height={24}
+                            iconBefore="updated"
+                            appearance="primary"
+                            intent="success"
+                            onClick={() => this.save()}
+                        >
+                            save
+                        </Button>
+                        <Button
+                            marginLeft={8}
+                            height={24}
+                            iconBefore="undo"
+                            appearance="primary"
+                            intent="warning"
+                            onClick={() => this.cancel()}
+                        >
+                            cancel
+                        </Button>
+                    </div>
                 </ListElement>
             );
         } else {
@@ -134,26 +137,27 @@ class ListItem extends Component {
                         label={name}
                         onChange={() => this.changeStatus()}
                     />
-
-                    <Button
-                        height={24}
-                        iconBefore="edit"
-                        appearance="primary"
-                        intent="none"
-                        onClick={() => this.toggleEdit()}
-                    >
-                        edit
-                    </Button>
-                    <Button
-                        height={24}
-                        marginLeft={8}
-                        iconBefore="delete"
-                        appearance="primary"
-                        intent="danger"
-                        onClick={() => this.deleteTask()}
-                    >
-                        delete
-                    </Button>
+                    <div>
+                        <Button
+                            height={24}
+                            iconBefore="edit"
+                            appearance="primary"
+                            intent="none"
+                            onClick={() => this.toggleEdit()}
+                        >
+                            edit
+                        </Button>
+                        <Button
+                            height={24}
+                            marginLeft={8}
+                            iconBefore="delete"
+                            appearance="primary"
+                            intent="danger"
+                            onClick={() => this.deleteTask()}
+                        >
+                            delete
+                        </Button>
+                    </div>
                 </ListElement>
             );
         }
