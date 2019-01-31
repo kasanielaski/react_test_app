@@ -1,8 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import ListItem, { ListElement } from './ListItem';
-import { Checkbox } from 'evergreen-ui/commonjs/checkbox';
-import { Button } from 'evergreen-ui';
+import { Checkbox, Button } from 'evergreen-ui';
 import TextInput from 'evergreen-ui/commonjs/text-input/src/TextInput';
 
 describe('ListItem', () => {

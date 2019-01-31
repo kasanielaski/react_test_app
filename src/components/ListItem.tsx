@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, SyntheticEvent } from 'react';
 import { connect } from 'react-redux';
 // @ts-ignore
 import { Checkbox, Button, TextInput } from 'evergreen-ui';

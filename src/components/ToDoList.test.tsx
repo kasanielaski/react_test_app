@@ -1,8 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import ToDoList from './ToDoList';
-import { TextInput } from 'evergreen-ui/commonjs/text-input';
-import { Button } from 'evergreen-ui';
+import { Button, TextInput } from 'evergreen-ui';
 import ListItem from './ListItem';
 
 describe('ToDoList', () => {

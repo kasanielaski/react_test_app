@@ -75,9 +75,11 @@ class ToDoList extends Component<IToDoListProps, IToDoListState> {
     }
 
     render() {
-        const listitems = this.props.todos.map((item: any, index: number) => (
-            <ListItem key={`${item.name}_${index}`} data={item} />
-        ));
+        const listitems: JSX.Element[] = this.props.todos.map(
+            (item: any, index: number) => (
+                <ListItem key={`${item.name}_${index}`} data={item} />
+            )
+        );
 
         return (
             <Wrapper>

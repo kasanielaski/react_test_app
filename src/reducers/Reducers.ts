@@ -14,13 +14,13 @@ import {
 const todos = (state: IToDo[] = [], action: any) => {
     switch (action.type) {
         case LOAD_STORE:
-            const formattedData = JSON.parse(
+            const formattedData: IToDo[] = JSON.parse(
                 localStorage.getItem(LOCAL_STORAGE_KEY)!
             );
 
             return (state = [...formattedData]);
         case SAVE_STORE:
-            const rawData = JSON.stringify(state);
+            const rawData: string = JSON.stringify(state);
             localStorage.setItem(LOCAL_STORAGE_KEY, rawData);
 
             return state;
@@ -43,7 +43,10 @@ const todos = (state: IToDo[] = [], action: any) => {
                     : { name, isDone }
             );
         case CHANGE_TODO_NAME:
-            const { currentName, newName } = action.payload;
+            const {
+                currentName,
+                newName
+            }: { currentName: string; newName: string } = action.payload;
             return state.map(({ name, isDone }) =>
                 name === currentName
                     ? { isDone, name: newName }
