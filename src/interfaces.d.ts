@@ -1,11 +1,13 @@
+export interface IToDo {
+    isDone: boolean;
+    name: string;
+}
+
 export interface IToDoListProps {
     addTodo(payload?: string): void;
     loadStore(): void;
     saveStore(): void;
-    todos: {
-        isDone: boolean;
-        name: string;
-    }[];
+    todos: IToDo[];
 }
 
 export interface IToDoListState {
@@ -15,10 +17,7 @@ export interface IToDoListState {
 export interface IListItemProps {
     changeTodoName(event: any): void;
     changeTodoStatus(event: any): void;
-    data: {
-        isDone: boolean;
-        name: string;
-    };
+    data: IToDo;
     deleteTodo(event: any): void;
     saveStore(): void;
 }

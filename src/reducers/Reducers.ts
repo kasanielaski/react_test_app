@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { IToDo } from '../interfaces';
 
 import { LOCAL_STORAGE_KEY } from '../config';
 import {
@@ -10,11 +11,11 @@ import {
     CHANGE_TODO_NAME
 } from '../actions/ActionType';
 
-const todos = (state = [], action) => {
+const todos = (state: IToDo[] = [], action: any) => {
     switch (action.type) {
         case LOAD_STORE:
             const formattedData = JSON.parse(
-                localStorage.getItem(LOCAL_STORAGE_KEY)
+                localStorage.getItem(LOCAL_STORAGE_KEY)!
             );
 
             return (state = [...formattedData]);
