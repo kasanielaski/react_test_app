@@ -92,26 +92,28 @@ class ListItem extends Component {
                         onChange={e => this.updateName(e)}
                     />
 
-                    <Button
-                        marginLeft={8}
-                        height={24}
-                        iconBefore="updated"
-                        appearance="primary"
-                        intent="success"
-                        onClick={() => this.save()}
-                    >
-                        save
-                    </Button>
-                    <Button
-                        marginLeft={8}
-                        height={24}
-                        iconBefore="undo"
-                        appearance="primary"
-                        intent="warning"
-                        onClick={() => this.cancel()}
-                    >
-                        cancel
-                    </Button>
+                    <dvi>
+                        <Button
+                            marginLeft={8}
+                            height={24}
+                            iconBefore="updated"
+                            appearance="primary"
+                            intent="success"
+                            onClick={() => this.save()}
+                        >
+                            save
+                        </Button>
+                        <Button
+                            marginLeft={8}
+                            height={24}
+                            iconBefore="undo"
+                            appearance="primary"
+                            intent="warning"
+                            onClick={() => this.cancel()}
+                        >
+                            cancel
+                        </Button>
+                    </dvi>
                 </ListElement>
             );
         } else {
@@ -124,25 +126,27 @@ class ListItem extends Component {
                         onChange={() => this.changeStatus()}
                     />
 
-                    <Button
-                        height={24}
-                        iconBefore="edit"
-                        appearance="primary"
-                        intent="none"
-                        onClick={() => this.toggleEdit()}
-                    >
-                        edit
-                    </Button>
-                    <Button
-                        height={24}
-                        marginLeft={8}
-                        iconBefore="delete"
-                        appearance="primary"
-                        intent="danger"
-                        onClick={() => this.deleteTask()}
-                    >
-                        delete
-                    </Button>
+                    <div>
+                        <Button
+                            height={24}
+                            iconBefore="edit"
+                            appearance="primary"
+                            intent="none"
+                            onClick={() => this.toggleEdit()}
+                        >
+                            edit
+                        </Button>
+                        <Button
+                            height={24}
+                            marginLeft={8}
+                            iconBefore="delete"
+                            appearance="primary"
+                            intent="danger"
+                            onClick={() => this.deleteTask()}
+                        >
+                            delete
+                        </Button>
+                    </div>
                 </ListElement>
             );
         }
