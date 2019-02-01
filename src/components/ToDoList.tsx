@@ -85,7 +85,7 @@ class ToDoList extends Component<IToDoListProps, IToDoListState> {
             <Wrapper>
                 <TextInput
                     type="text"
-                    placeholder="Input task"
+                    placeholder="Input task to add"
                     value={this.state.input}
                     onKeyUp={(e: KeyboardEvent) => this.onKeyUp(e)}
                     onChange={(e: SyntheticEvent) => this.onChange(e)}
