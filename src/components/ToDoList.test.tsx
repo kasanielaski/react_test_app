@@ -4,6 +4,7 @@ import ToDoList from './ToDoList';
 import { Button, TextInput } from 'evergreen-ui';
 import ListItem from './ListItem';
 
+// @todo fix tests
 describe('ToDoList', () => {
     let mountedToDoList;
 

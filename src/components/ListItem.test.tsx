@@ -4,6 +4,7 @@ import ListItem, { ListElement } from './ListItem';
 import { Checkbox, Button } from 'evergreen-ui';
 import TextInput from 'evergreen-ui/commonjs/text-input/src/TextInput';
 
+// @todo fix tests
 describe('ListItem', () => {
     let props;
     let mountedListItem;
