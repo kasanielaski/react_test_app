@@ -34,13 +34,25 @@ class ListItem extends Component<IListItemProps, IListItemState> {
     }
 
     changeStatus(): void {
-        this.props.changeTodoStatus(this.props.data.name);
-        this.props.saveStore();
+        const {
+            changeTodoStatus,
+            saveStore,
+            data: { name }
+        } = this.props;
+
+        changeTodoStatus(name);
+        saveStore();
     }
 
     deleteTask(): void {
-        this.props.deleteTodo(this.props.data.name);
-        this.props.saveStore();
+        const {
+            deleteTodo,
+            saveStore,
+            data: { name }
+        } = this.props;
+
+        deleteTodo(name);
+        saveStore();
     }
 
     toggleEdit(): void {
@@ -56,22 +68,28 @@ class ListItem extends Component<IListItemProps, IListItemState> {
     }
 
     save(): void {
-        const { name } = this.props.data;
+        const {
+            changeTodoName,
+            saveStore,
+            data: { name }
+        } = this.props;
         const { newName } = this.state;
         if (name === newName) return;
 
-        this.props.changeTodoName({
+        changeTodoName({
             currentName: name,
             newName
         });
-        this.props.saveStore();
+        saveStore();
 
         this.toggleEdit();
     }
 
     cancel(): void {
+        const { name } = this.props.data;
+
         this.setState({
-            newName: this.props.data.name
+            newName: name
         });
 
         this.toggleEdit();
@@ -102,7 +120,7 @@ class ListItem extends Component<IListItemProps, IListItemState> {
                         type="text"
                         value={newName}
                         onKeyUp={(e: KeyboardEvent) => this.onKeyUp(e)}
-                        onChange={(e: any) => this.updateName(e)}
+                        onChange={(e: SyntheticEvent) => this.updateName(e)}
                     />
                     <div>
                         <Button

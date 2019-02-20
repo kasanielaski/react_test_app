@@ -34,20 +34,24 @@ class ToDoList extends Component<IToDoListProps, IToDoListState> {
     }
 
     componentWillMount(): void {
+        const { loadStore } = this.props;
+
         try {
-            this.props.loadStore();
+            loadStore();
         } catch (error) {
             throw new Error(`there is problem with localStorage: ${error}`);
         }
     }
 
     addItem(): void {
+        const { addTodo, saveStore } = this.props;
+
         if (this.state.input!.trim() === '') {
             return;
         }
 
-        this.props.addTodo(this.state.input);
-        this.props.saveStore();
+        addTodo(this.state.input);
+        saveStore();
         this.setState({
             input: ''
         });
@@ -75,11 +79,11 @@ class ToDoList extends Component<IToDoListProps, IToDoListState> {
     }
 
     render() {
-        const listitems: JSX.Element[] = this.props.todos.map(
-            (item: any, index: number) => (
-                <ListItem key={`${item.name}_${index}`} data={item} />
-            )
-        );
+        const { todos } = this.props;
+
+        const listitems: JSX.Element[] = todos.map((item, index: number) => (
+            <ListItem key={`${item.name}_${index}`} data={item} />
+        ));
 
         return (
             <Wrapper>
