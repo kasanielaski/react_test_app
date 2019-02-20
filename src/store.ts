@@ -3,6 +3,4 @@ import todoApp from './reducers/Reducers';
 
 const initialState = {};
 
-const store = createStore(todoApp, initialState);
-
-export default store;
+export const store = createStore(todoApp, initialState);

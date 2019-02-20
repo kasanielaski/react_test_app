@@ -15,10 +15,10 @@ export interface IToDoListState {
 }
 
 export interface IListItemProps {
-    changeTodoName(event: any): void;
-    changeTodoStatus(event: any): void;
+    changeTodoName(payload: { currentName: string; newName: string }): void;
+    changeTodoStatus(payload: string): void;
     data: IToDo;
-    deleteTodo(event: any): void;
+    deleteTodo(payload: string): void;
     saveStore(): void;
 }
 
