@@ -4,14 +4,14 @@ export interface IToDo {
 }
 
 export interface IToDoListProps {
-    addTodo(payload?: string): void;
+    addTodo(payload: string): void;
     loadStore(): void;
     saveStore(): void;
     todos: IToDo[];
 }
 
 export interface IToDoListState {
-    input?: string;
+    input: string;
 }
 
 export interface IListItemProps {

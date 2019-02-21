@@ -1,13 +1,13 @@
-import React, { Component, SyntheticEvent } from 'react';
+import React, { useState, useEffect, SyntheticEvent } from 'react';
 import { connect } from 'react-redux';
 // @ts-ignore
 import { TextInput, Button } from 'evergreen-ui';
 import styled from 'styled-components';
 import ListItem from './ListItem';
-import { IToDoListProps, IToDoListState } from '../interfaces';
+import { IToDoListProps, IToDo } from '../interfaces';
 import { loadStore, saveStore, addTodo } from '../actions/Actions';
 
-const mapStateToProps = (state: IToDoListProps) => state;
+const mapStateToProps = (state: IToDo[]) => state;
 
 const mapDispathToProps = {
     loadStore,
@@ -25,87 +25,64 @@ const List = styled.ul`
     margin-top: 8px;
 `;
 
-class ToDoList extends Component<IToDoListProps, IToDoListState> {
-    constructor(props: IToDoListProps) {
-        super(props);
-        this.state = {
-            input: ''
-        };
-    }
+const ToDoList = ({ addTodo, loadStore, saveStore, todos }: IToDoListProps) => {
+    const [userInput, setUserInput] = useState('');
 
-    componentWillMount(): void {
-        const { loadStore } = this.props;
-
+    useEffect(() => {
         try {
             loadStore();
         } catch (error) {
             throw new Error(`there is problem with localStorage: ${error}`);
         }
-    }
+    });
 
-    addItem(): void {
-        const { addTodo, saveStore } = this.props;
-
-        if (this.state.input!.trim() === '') {
+    function addItem(): void {
+        if (userInput.trim() === '') {
             return;
         }
 
-        addTodo(this.state.input);
+        addTodo(userInput);
         saveStore();
-        this.setState({
-            input: ''
-        });
+        setUserInput('');
     }
 
-    onKeyUp({ keyCode }: KeyboardEvent): void {
+    function onKeyUp({ keyCode }: KeyboardEvent): void {
         switch (keyCode) {
             case 13:
-                this.addItem();
+                addItem();
                 break;
             case 27:
-                this.setState({
-                    input: ''
-                });
+                setUserInput('');
                 break;
             default:
                 break;
         }
     }
 
-    onChange({ target: { value } }: any): void {
-        this.setState({
-            input: value
-        });
+    function onChange({ target: { value } }: any): void {
+        setUserInput(value);
     }
 
-    render() {
-        const { todos } = this.props;
+    const listitems: JSX.Element[] = todos.map((item, index: number) => (
+        <ListItem key={`${item.name}_${index}`} data={item} />
+    ));
 
-        const listitems: JSX.Element[] = todos.map((item, index: number) => (
-            <ListItem key={`${item.name}_${index}`} data={item} />
-        ));
-
-        return (
-            <Wrapper>
-                <TextInput
-                    type="text"
-                    placeholder="Input task to add"
-                    value={this.state.input}
-                    onKeyUp={(e: KeyboardEvent) => this.onKeyUp(e)}
-                    onChange={(e: SyntheticEvent) => this.onChange(e)}
-                />
-                <Button
-                    marginLeft={8}
-                    iconBefore="add"
-                    onClick={() => this.addItem()}
-                >
-                    add task
-                </Button>
-                <List>{listitems}</List>
-            </Wrapper>
-        );
-    }
-}
+    return (
+        <Wrapper>
+            <TextInput
+                type="text"
+                placeholder="Input task to add"
+                value={userInput}
+                onKeyUp={(e: KeyboardEvent) => onKeyUp(e)}
+                onChange={(e: SyntheticEvent) => onChange(e)}
+            />
+            <Button marginLeft={8} iconBefore="add" onClick={() => addItem()}>
+                add task
+            </Button>
+            <List>{listitems}</List>
+        </Wrapper>
+    );
+};
 
 export default connect(
     mapStateToProps,
